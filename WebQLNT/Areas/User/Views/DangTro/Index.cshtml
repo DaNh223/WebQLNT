@@ -1,0 +1,127 @@
+﻿
+@{
+    //if (Session["loginID"] == null)
+    //{
+    //    Response.Redirect("~/User/DangNhap/Index");
+    //}
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/User/Views/Shared/_LayoutPage2.cshtml";
+}
+<link rel="stylesheet" href="~/Areas/User/assets/css/style_dangtro.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+<h1>Đăng tin nhà trọ</h1>
+<hr>
+<form action="" name="formDangTro" id="formDangTro" class="info_form">
+    <div class="address_group">
+        <h3>Địa chỉ cho thuê</h3>
+        <div class="address_box">
+            <div class="address_input">
+                <h4>Số nhà - Tên đường: <span class="msg msg_diachi" style="color:red;"></span></h4>
+                <input class="info" type="text" name="diachi" id="diachi" required>
+            </div>
+            <div class="address_select">    
+                <div class="address_choice">
+                    <h4>Tỉnh/Thành phố:</h4>
+                    <select class="info" name="tinh" id="tinh" disabled>
+                        <option value="0">Tỉnh Thành</option>
+                    </select>
+                </div>
+
+                <div class="address_choice">
+                    <h4>Quận/Huyện:</h4>
+                    <select class="info" name="quan" id="quan" disabled>
+                        <option value="0">Quận/Huyện</option>
+                    </select>
+                </div>
+
+                <div class="address_choice">
+                    <h4>Phường/Xã: <span class="msg msg_phuong" style="color:red;"></span></h4>
+                    <select class="info" name="phuong" id="phuong" required>
+                    </select>
+                </div>
+            </div>
+
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <div class="desc_group">
+        <h3>Thông tin nhà trọ</h3>
+
+        <div class="desc_row">
+            <div class="desc_info">
+                <h4>Tên trọ: <span class="msg msg_tentro" style="color:red;"></span></h4>
+                <input class="info" type="text" name="ten_tro" id="ten_tro" required>
+            </div>
+            <div class="desc_info">
+                <h4>Diện tích (m2): </h4>
+                <input class="info" type="number" name="dien_tich" id="dien_tich" required>
+            </div>
+        </div>
+
+        <div class="desc_row">
+            <div class="desc_info">
+                <h4>Trạng thái phòng: <span class="msg msg_trangthai" style="color:red;"></span></h4>
+                <select class="info" name="trang_thai" id="trang_thai" required>
+                    <option value="0" selected>Vui lòng chọn</option>
+                    <option value="1">Còn phòng</option>
+                    <option value="2">Hết phòng</option>
+                </select>
+            </div>
+            <div class="desc_info">
+                <h4>Giá phòng (VNĐ): </h4>
+                <input class="info gia" type="number" name="gia_phong" id="gia_phong" required>
+            </div>
+        </div>
+
+        <div class="desc_row">
+            <div class="desc_info">
+                <h4>Giá điện (VNĐ): </h4>
+                <input class="info gia" type="number" name="gia_dien" id="gia_dien" required>
+            </div>
+            <div class="desc_info">
+                <h4>Giá nước (VNĐ): </h4>
+                <input class="info gia" type="number" name="gia_nuoc" id="gia_nuoc" required>
+            </div>
+        </div>
+
+        <div class="desc_row">
+            <div class="desc_info">
+                <h4>Tiện ích: <span class="msg msg_tienich" style="color:red;"></span></h4>
+                <textarea class="info" name="tien_ich" id="tien_ich" required></textarea>
+            </div>
+        </div>
+
+        <div class="desc_row">
+            <div class="desc_info">
+                <h4>Thông tin mô tả: <span class="msg msg_mota" style="color:red;"></span></h4>
+                <textarea class="info" name="mo_ta" id="mo_ta" required></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="image_group">
+        <h3>Hình ảnh <span tabindex="0" class="msg msg_hinhanh" style="color:red"></span></h3>
+        <p>Chọn ảnh về nhà trọ của bạn</p>
+        <label for="imageInput" class="input_img_btn" tabindex="0"><i class="bi bi-camera-fill"></i>Tải ảnh lên</label>
+        <input type="file" name="imageInput" id="imageInput" style="display: none;" accept=".jpg, .jpeg, .png, .gif" multiple>
+        <p>Ảnh đã chọn</p>
+        <div class="imagePreview"></div>
+    </div>
+
+    <button type="submit" class="upload_button">
+        Đăng tải
+    </button>
+</form>
+
+<div id="toast">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+
+<script src="~/Areas/User/assets/js/animation.js"></script>
+<script src="~/Areas/User/assets/js/toast.js"></script>
+<script src="~/Areas/User/assets/js/script_dangtro.js"></script>

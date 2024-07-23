@@ -1,0 +1,247 @@
+﻿@model IEnumerable<WebQLNT.Areas.Admin.Data.NhaTroViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+@helper FormatCurrency(decimal amount)
+{
+    @String.Format("{0:N0}", amount)
+}
+
+<div class="main__right container">
+    <div class="right__header">
+        <h1>Danh sách bài đăng</h1>
+
+        <div class="box-right-header">
+            <div class="searh-box">
+                <i class="ri-search-line"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm...">
+            </div>
+
+            <div class="sort-bar">
+                <select id="sort_list">
+                    <option class="sort_item" value="default">Mặc định</option>
+                    <option class="sort_item" value="dateAsc">Bài đăng: Cũ đến mới</option>
+                    <option class="sort_item" value="pending">Bài đăng: Chưa duyệt</option>
+                    <option class="sort_item" value="approved">Bài đăng: Đã duyệt</option>
+                    <option class="sort_item" value="priceDesc">Giá thuê: Lớn đến Nhỏ</option>
+                    <option class="sort_item" value="priceAsc">Giá thuê: Nhỏ đến Lớn</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <!-- Start table -->
+    <div class="box-table">
+        <table width="100%" id="dataTable">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Người đăng</td>
+                    <td>Tên trọ</td>
+                    <td>Địa chỉ</td>
+                    <td>Diện tích</td>
+                    <td>Giá cho thuê</td>
+                    <td>Trạng thái</td>
+                    <td colspan=2>Duyệt | Xóa</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td id="post-id">@item.ID</td>
+
+                        <td class="people" style="width: 200px">
+                            <img src="@(item.HinhNguoiDung == null ? Url.Content("~/Areas/User/assets/img/user_img.png") : Url.Content($"~/uploads/{item.HinhNguoiDung}")) " alt="">
+                            <div class="people-des">
+                                <h5>@item.Nguoidang</h5>
+                                <p>@item.sdt</p>
+                            </div>
+                        </td>
+
+                        <td class="home-name">
+                            <p>@item.Tentro</p>
+                        </td>
+
+                        <td class="home-loacate" style="width: 300px">
+                            <p>@item.Diachi</p>
+                        </td>
+
+                        <td class="home-acreage">
+                            <p>@item.Dientich <span>m2</span></p>
+                        </td>
+
+                        <td class="hom-price">
+                            <p>@FormatCurrency((decimal)item.GiachoThue)</p>
+                        </td>
+
+                        <td class="post-status">
+                            @if (item.TrangthaiDuyet.Trim() == "Chờ duyệt")
+                            {
+                                <p class="status-info pending">@item.TrangthaiDuyet</p>
+                            }
+                            else
+                            {
+                                <p class="status-info approve">@item.TrangthaiDuyet</p>
+                            }
+                        </td>
+
+                        <td class="action">
+                            @if (item.TrangthaiDuyet.Trim() == "Chờ duyệt")
+                            {
+                                @*<button class="btn-approve js-approve-post" type="submit" title="Duyệt"
+                                        data-id="@item.ID"
+                                        data-name="@item.Tentro"
+                                        data-address="@item.Diachi"
+                                        data-dt="@item.Dientich"
+                                        data-price="@item.GiachoThue"
+                                        data-elc="@item.Giadien"
+                                        data-water="@item.Gianuoc"
+                                        data-desc="@item.Mota"
+                                        data-utilities="@item.Tienich">
+                                    <i class="ri-check-line"></i>
+                                </button>*@
+
+                                <button class="btn-approve js-approve-post" type="submit" title="Duyệt"
+                                        data-id="@item.ID"
+                                        data-name="@item.Tentro"
+                                        data-address="@item.Diachi"
+                                        data-dt="@item.Dientich"
+                                        data-price="@item.GiachoThue"
+                                        data-elc="@item.Giadien"
+                                        data-water="@item.Gianuoc"
+                                        data-desc="@item.Mota"
+                                        data-utilities="@item.Tienich"
+                                        data-images="@string.Join(",", item.HinhTro)">
+                               <i class="ri-check-line"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="disabled" style="
+                                          text-decoration: none;
+                                          font-size: 18px;
+                                          font-weight: 600;
+                                          background-color: #dddddd;
+                                          color: #666;
+                                          padding: 5px 8px;
+                                          border-radius: 5px;
+                                          border: none;
+                                          cursor: not-allowed;"
+                                        type="submit" title="Duyệt">
+                                    <i class="ri-check-line"></i>
+                                </button>
+                            }
+                            <button class="btn-delete js-delete-post" type="submit" title="Xóa" data-id="@item.ID"><i class="ri-delete-bin-2-line"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- End main -->
+<!-- Modal delete -->
+<div class="modal-post-delete js-modal-post-delete">
+    <div class="modal-post-delete-container js-modal-post-delete-container">
+        <div class="modal-post-delete-header">
+            <p class="head-delete-alert" style="margin-left:16px">Xác nhận xóa bài đăng</p>
+        </div>
+        <div class="modal-post-delete-body">
+            <div class="body-alert">
+                <p>Bạn có chắc muốn xóa bài đăng này?</p>
+            </div>
+            <hr>
+            <div class="btn-option">
+                <button type="button" class="cancel-post js-modal-post-delete-cancel">Hủy</button>
+                <button type="button" class="delete-post js-modal-post-deleted">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Modal-Delete -->
+<!--Begin Modal-approve -->
+<div id="myModal" class="modal-approve-post js-modal-approve-post ">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1>Thông tin trọ chi tiết</h1>
+            <span class="close-modal-approve js-close-approve-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div>
+                <label for="name">Mã trọ:</label>
+                <input type="text" id="id-home" required readonly>
+            </div>
+
+            <div>
+                <label for="name">Tên trọ</label>
+                <input type="text" id="name" required readonly>
+            </div>
+            <div>
+                <label for="email">Địa chỉ:</label>
+                <input type="text" id="address" required readonly>
+            </div>
+
+            <div>
+                <label for="dob">Diện tích (m2):</label>
+                <input type="text" id="dt" max="" required readonly>
+            </div>
+
+            <div>
+                <label for="dob">Giá phòng (VNĐ):</label>
+                <input type="text" id="price" max="" required readonly>
+            </div>
+
+            <div class="dien-nuoc-box">
+                <div>
+                    <label for="address">Giá điện (VNĐ):</label>
+                    <input type="text" id="elec" required readonly>
+                </div>
+                <div>
+                    <label for="phone">Giá nước (VNĐ):</label>
+                    <input type="text" id="water" pattern="^[0-9]{10}$" maxlength="10" required readonly>
+                </div>
+            </div>
+
+            <div>
+                <label for="post_count">Mô tả:</label>
+                <textarea class="home-desc" id="desc" readonly></textarea>
+            </div>
+
+            <div>
+                <label for="post_count">Tiện ích:</label>
+                <textarea class="home-utilities" id="utilities" readonly></textarea>
+            </div>
+
+            <label for="post_count">Hình ảnh trọ:</label>
+
+            <div class="img-box-home">
+                <img src="~/Areas/Admin/img/anh-14-mau-phong-tro-thiet-ke-hien-dai.jpg" />
+                <img src="~/Areas/Admin/img/anh-14-mau-phong-tro-thiet-ke-hien-dai.jpg" />
+                <img src="~/Areas/Admin/img/anh-14-mau-phong-tro-thiet-ke-hien-dai.jpg" />
+                <img src="~/Areas/Admin/img/anh-14-mau-phong-tro-thiet-ke-hien-dai.jpg" />
+                <img src="~/Areas/Admin/img/anh-14-mau-phong-tro-thiet-ke-hien-dai.jpg" />
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" id="approved-btn">Duyệt bài đăng</button>
+        </div>
+    </div>
+</div>
+<!--End Modal-approve -->
+<!-- JAVASCRIPT -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="~/Areas/Admin/JS/post.js"></script>
+<script>
+
+</script>

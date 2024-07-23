@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="~/Areas/Admin/CSS/Style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+
+@if (Session["loginID"] == null)
+{
+    Response.Redirect("~/User/DangNhap/Index");
+}
+<body>
+    <header>
+        <div class="header container">
+            <div class="header__left">
+                <div class="header__logo">
+                    <img src="~/Areas/Admin/img/logo.png" alt="Logo">
+                </div>
+                <div class="header__desc">
+                    <h1>TRƯỜNG ĐẠI HỌC ĐỒNG THÁP</h1>
+                    <p>Hệ thống đánh giá giới thiệu nhà trọ</p>
+                </div>
+            </div>
+            <div class="header__right">
+                <ul class="header__list">
+                    <li>
+                        <div class="user-info">
+                            <i class="ri-account-circle-line"></i>
+                            Lê Hoàng Thiện Mỹ
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="main__content">
+            <div class="main__left">
+                <ul class="nav-list">
+                    <li>
+                        <a href="@Url.Action("Index", "DSBaiDang", new { area = "Admin" })">
+                            <i class="ri-home-4-line"></i>
+                            Quản lý bài đăng
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Index", "DSTaiKhoan", new { area = "Admin" })">
+                            <i class="ri-account-pin-box-line"></i>
+                            Quản lý tài khoản chủ trọ
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="~/User/DangNhap/Logout">
+                            <i class="ri-logout-box-line"></i>
+                            Đăng xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                @RenderBody();
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    if (!localStorage.getItem('pageReloaded')) {
+        localStorage.setItem('pageReloaded', 'true');
+        location.reload();
+    } else {
+        localStorage.removeItem('pageReloaded');
+    }
+</script>

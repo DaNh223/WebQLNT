@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/User/Views/Shared/_LayoutPage1.cshtml";
+}
+<link rel="stylesheet" href="~/Areas/User/assets/css/style_trangchu.css">
+
+<div class="intro">
+    <div class="intro_container">
+        <div class="intro_left">
+            <div class="intro_desc">
+                <h1>Tìm một <span>Phòng trọ</span> để ở và học tập</h1>
+                <p>
+                    Team chúng tôi sẽ hỗ trợ bạn thực hiện được điều này tốt nhất.
+                </p>
+                <p>
+                    Hãy kết nối với Ngân hàng nhà trọ của trường Đại học Đồng Tháp.
+
+                </p>
+                <div class="start_button">
+                    <a href="~/User/NhaTro/Index">Get started</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="intro_right">
+
+            <div style="--swiper-navigation-color: #037DC3; --swiper-pagination-color: #fff"
+                 class="swiper mySwiper2">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="~/uploads/1.png" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="~/uploads/2.png" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="~/uploads/3.png" />
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="~/uploads/4.png" />
+                    </div>                    
+                    <div class="swiper-slide">
+                        <img src="~/uploads/5.png" />
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="browser">
+    <div class="browser_container">
+        <div class="search_form">
+            <div class="search_block">
+                <label for="tenTro">Nhập tên trọ</label>
+                <input type="text" name="tenTro" id="tenTro">
+                <div class="search_button">
+                    @*<a href="#">TÌM KIẾM</a>*@
+                    <p>TÌM KIẾM</p>
+                </div>
+            </div>
+            <div class="search_condition">
+                <select name="tinh" id="tinh" class="select_TP" disabled>
+                    @*<option value="CaoLanh">1</option>*@
+                </select>
+
+                <select name="quan" id="quan" class="select_QH" disabled>
+                    @*<option value="CaoLanh">1</option>*@
+                </select>
+
+                <select name="phuong" id="phuong" class="select_PX">
+                    @*<option value="CaoLanh">1</option>*@
+                </select>
+
+                <select name="gia" id="gia" class="select_Gia">
+                    <option selected value="0">Giá</option>
+                    <option value="1">Dưới 1 triệu</option>
+                    <option value="2">Từ 1 - 2 triệu</option>
+                    <option value="3">Trên 2 triệu</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="list_form">
+            <div class="list_header">
+                <h1>Trọ mới đăng</h1>
+            </div>
+
+            <div class="list_content">
+                @{
+                    List<WebQLNT.Models.NhaTro> dsnt = ViewBag.DSNT as List<WebQLNT.Models.NhaTro>;
+
+                    foreach (var nt in dsnt)
+                    {
+                        List<WebQLNT.Models.HinhAnh> dsha = nt.HinhAnh.ToList();
+                        var firstImage = dsha.Any() ? dsha.First().URL : "~/Areas/User/assets/img/img1.jpg";
+
+                        <div class="list_item">
+                            <input type="hidden" name="">
+                            <a href="~/User/NhaTro/ChiTiet/@nt.MaNT" class="item">
+                                <div class="item_img">
+                                    <img src="@Url.Content(dsha.Any() ? $"~/uploads/{dsha.First().URL}" : "~/Areas/User/assets/img/img1.jpg")" alt="">
+                                </div>
+
+                                <div class="item_info">
+                                    <h3>@nt.TenTro</h3>
+                                    <p>
+                                        @nt.DiaChi, @nt.Phuong, @nt.Quan, @nt.Tinh
+                                    </p>
+                                    <div class="price_detail">
+                                        <h3>Giá từ: <span>@String.Format("{0:N0}", nt.GiaPhong) VNĐ</span></h3>
+                                        <h3>@nt.DienTich m2</h3>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="more_detail">
+                                <div class="detail_button">
+                                    <a href="~/User/NhaTro/ChiTiet/@nt.MaNT">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="~/Areas/User/assets/js/animation.js"></script>
+<script src="~/Areas/User/assets/js/toast.js"></script>
+<script src="~/Areas/User/assets/js/script_trangchu.js"></script>

@@ -1,0 +1,21 @@
+﻿.content {
+    padding: 40px 60px;
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    line-height: 30px;
+}
+
+    .content h1 {
+        font-size: 2rem;
+        color: var(--blue_color);
+        padding: 10px 30px;
+        border-bottom: solid 3px var(--blue_color);
+    }
+
+    .content span {
+        font-size: 1.1rem;
+    
+    }

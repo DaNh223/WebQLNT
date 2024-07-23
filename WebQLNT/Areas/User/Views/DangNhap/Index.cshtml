@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/User/Views/Shared/_LayoutPage1.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/Areas/User/assets/css/style_dangnhap.css">
+
+<form class="login_form">
+    <h1 class="login_header">ĐĂNG NHẬP</h1>
+    <h4 class="messageError"></h4>
+    <div class="input_box">
+        <h3>Email:</h3>
+        <input type="text" name="input_email" id="input_email" placeholder="Nhập email" required>
+    </div>
+
+    <div class="input_box">
+        <h3>Mật khẩu:</h3>
+        <div class="group_input">
+            <input type="password" name="input_password" id="input_password" placeholder="Nhập mật khẩu" required>
+            <div class="eye_btn" id="eye" onclick="if (input_password.type == 'text') input_password.type = 'password';
+                    else input_password.type = 'text';">
+                <i class="bi bi-eye"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="pass_box">
+        <div class="remember_box">
+            <label for="remember">Nhớ mật khẩu</label>
+            <input type="checkbox" name="remember" id="remember">
+        </div>
+
+        <div class="forget_box loss_pass">
+            <p>Quên mật khẩu?</p>
+        </div>
+    </div>
+
+    <button class="login_btn">
+        <p>Đăng nhập</p>
+    </button>
+
+    <a href="~/User/DangKy/Index" class="to_register">Chưa có tài khoản? <span>Đăng ký</span></a>
+</form>
+
+
+<div id="loss-pass_modal" class="modal">
+    <div class="modal_container autoAnimation">
+        <div class="close_btn">
+            <i class="bi bi-x-lg"></i>
+        </div>
+        <div class="send-email_form">
+            <h1 class="modal_title">Quên mật khẩu</h1>
+            <p class="modal_info">Địa chỉ email:</p>
+            <input type="email" id="forget-pass_email" class="modal_input">
+            <p class="modal_info messageLossPassMail message">Chúng tôi sẽ gửi mã đến email của bạn</p>
+            <div class="btns">
+                <div class="send_btn">
+                    <p>Gửi</p>
+                </div>
+            </div>
+        </div>
+
+        <form id="loss_pass_otp_form" class="otp_form">
+            <h1 class="modal_title">Vui lòng nhập mã OTP</h1>
+            <!-- <p class="messageLossPassOTP"></p> -->
+            <div id="input_otp" class="input_number">
+                <input name="otp1" class="input" type="text" inputmode="numeric" maxlength="1" />
+                <input name="otp2" class="input" type="text" inputmode="numeric" maxlength="1" />
+                <input name="otp3" class="input" type="text" inputmode="numeric" maxlength="1" />
+                <input name="otp4" class="input" type="text" inputmode="numeric" maxlength="1" />
+            </div>
+            <p class="resend">Gửi lại</p>
+            <div class="btns">
+                <button type="submit" class="submit_btn">
+                    Kiểm tra
+                </button>
+                @*<div class="submit_btn">
+                        Kiểm tra
+                    </div>*@
+            </div>
+        </form>
+
+
+        <form id="change_pass_form" class="change_form">
+            <h1 class="modal_title">Đổi mật khẩu</h1>
+
+            <div class="change_title">
+                <p class="change_info">Mật khẩu mới</p>
+                <span class="required">*</span>
+                <div class="messageError newPassMessage" style="margin-left: 5px;"></div>
+            </div>
+
+            <div class="pass_input">
+                <input type="password" name="newPassword" id="change_password" class="change_input" required>
+                <div class="eye_btn" id="eye" onclick="if (change_password.type == 'text') change_password.type = 'password';
+                    else change_password.type = 'text';">
+                    <i class="bi bi-eye"></i>
+                </div>
+            </div>
+
+            <div class="change_title">
+                <p class="change_info">Xác nhận mật khẩu</p>
+                <span class="required">*</span>
+                <div class="messageError newConfirmPassMessage" style="margin-left: 5px;"></div>
+            </div>
+
+            <div class="pass_input">
+                <input type="password" name="confirmNewPassword" id="confirm_change_password" class="change_input" required>
+                <div class="eye_btn" id="eye" onclick="if (confirm_change_password.type == 'text') confirm_change_password.type = 'password';
+                            else confirm_change_password.type = 'text';">
+                    <i class="bi bi-eye"></i>
+                </div>
+            </div>
+
+            <div class="btns">
+                @*<div type="submit" class="change_btn">
+                        <p>Đổi mật khẩu</p>
+                    </div>*@
+                <button type="submit" class="change_btn">
+                    Đổi mật khẩu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="~/Areas/User/assets/js/script_dangnhap.js"></script>
+
+@*<script>
+    </script>*@

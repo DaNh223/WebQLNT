@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/User/Views/Shared/_LayoutPage1.cshtml";
+}
+<link rel="stylesheet" href="~/Areas/User/assets/css/style_dangky.css">
+
+<form class="register_form">
+    <h1 class="register_header">ĐĂNG KÝ</h1>
+
+    <div class="input_box name_input">
+        <h3>Họ và tên: <span></span></h3>
+        <input type="text" name="userName" id="userName" placeholder="Nhập họ và tên" required>
+    </div>
+    <div class="input_box date_input">
+        <h3>Ngày/tháng/năm sinh: <span></span></h3>
+        <input type="date" name="dateOfBirth" id="dateOfBirth" required>
+    </div>
+    <div class="input_box phone_input">
+        <h3>Số điện thoại: <span></span></h3>
+        <input type="number" name="phoneNumber" id="phoneNumber" placeholder="Nhập số điện thoại" required>
+    </div>
+    <div class="input_box address_input">
+        <h3>Địa chỉ: <span></span></h3>
+        <input type="tel" name="address" id="address" placeholder="Nhập địa chỉ" required>
+    </div>
+
+    <div class="input_box email_input">
+        <h3>Email: <span></span></h3>
+        <input type="email" name="email" id="email" placeholder="Nhập email" required>
+    </div>
+    <div class="input_box pass_input">
+        <h3>Mật khẩu: <span></span></h3>
+        <div class="group_input">
+            <input type="password" name="password" id="password" placeholder="Nhập mật khẩu" required>
+            <div class="eye_btn" id="eye" onclick="if (password.type == 'text') password.type = 'password';
+                            else password.type = 'text';">
+                <i class="bi bi-eye"></i>
+            </div>
+        </div>
+    </div>
+    <div class="input_box confirm-pass_input">
+        <h3>Nhập lại mật khẩu: <span></span></h3>
+        <div class="group_input">
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Nhập lại mật khẩu" required>
+
+            <div class="eye_btn" id="eye" onclick="if (confirm_password.type == 'text') confirm_password.type = 'password';
+                    else confirm_password.type = 'text';">
+                <i class="bi bi-eye"></i>
+            </div>
+        </div>
+    </div>
+
+    <button class="register_btn">
+        <p>Đăng ký</p>
+    </button>
+    @*<div class="register_btn">
+            <p>Đăng ký</p>
+        </div>*@
+
+    <a href="~/User/DangNhap/Index" class="to_register">Đã có tài khoản? <span>Đăng nhập</span></a>
+</form>
+
+<div id="check-email_modal" class="modal">
+    <div class="modal_container autoAnimation">
+        <div class="close_btn">
+            <i class="bi bi-x-lg"></i>
+        </div>
+        <h1 class="modal_title">Kiểm tra Email</h1>
+        <h3 class="modal_title messageOTP">Vui lòng nhập mã OTP được gửi về mail của bạn</h3>
+        <form id="check_mail_otp_form" class="otp_form">
+            <input type="hidden" name="action" value="check_mail">
+            <div id="input_otp" class="input_number">
+                <input name="otp1" class="input" type="text" inputmode="numeric" maxlength="1" />
+                <input name="otp2" class="input" type="text" inputmode="numeric" maxlength="1" />
+                <input name="otp3" class="input" type="text" inputmode="numeric" maxlength="1" />
+                <input name="otp4" class="input" type="text" inputmode="numeric" maxlength="1" />
+            </div>
+
+            <p class="resend">Gửi lại</p>
+
+            <div class="btns">
+                <button type="submit" class="submit_btn">Kiểm tra</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="~/Areas/User/assets/js/animation.js"></script>
+<script src="~/Areas/User/assets/js/toast.js"></script>
+
+<script src="~/Areas/User/assets/js/script_dangky.js"></script>

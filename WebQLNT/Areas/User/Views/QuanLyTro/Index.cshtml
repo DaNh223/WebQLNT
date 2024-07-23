@@ -1,0 +1,212 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/User/Views/Shared/_LayoutPage2.cshtml";
+}
+
+<link rel="stylesheet" href="~/Areas/User/assets/css/style_quanlytro.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+<h1>Danh sách nhà trọ</h1>
+<hr>
+<table class="table_nt">
+    <tr class="table_header">
+        <th>Mã trọ</th>
+        <th>Tên trọ</th>
+        <th>Địa chỉ</th>
+        <th>Diện tích</th>
+        <th>Giá cho thuê</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+    <tbody class="table_body">
+        @{
+            List<WebQLNT.Models.NhaTro> dsnt = ViewBag.DSNT as List<WebQLNT.Models.NhaTro>;
+
+            //if (dsnt != null)
+            //{
+            foreach (var nt in dsnt)
+            {
+                    <tr class="table_row">
+                        <td class="table_column" id="col1">
+                            @nt.MaNT
+                        </td>
+                        <td class="table_column" id="col2">@nt.TenTro</td>
+                        <td class="table_column" id="col3" title="@nt.DiaChi, @nt.Phuong, @nt.Quan, @nt.Tinh">
+                            @nt.DiaChi, @nt.Phuong, @nt.Quan, @nt.Tinh
+                        </td>
+                        <td class="table_column" id="col4">@nt.DienTich</td>
+                        <td class="table_column" id="col5">@String.Format("{0:N0}", nt.GiaPhong)</td>
+                        <td class="table_column" id="col6">
+
+                            @if (nt.TrangThaiDuyet == "Chờ duyệt")
+                            {
+                                <p class="pending">@nt.TrangThaiDuyet</p>
+                            }
+                            else
+                            {
+                                if (nt.TrangThai == "Còn phòng")
+                                {
+                                    <p class="available">@nt.TrangThai</p>
+                                }
+                                else if (nt.TrangThai == "Hết phòng")
+                                {
+                                    <p class="unavailable">@nt.TrangThai</p>
+                                }
+                            }
+                        </td>
+
+                      <td class="table_column" id="col7">
+                            <div class="edit_button button">
+                                <i class="bi bi-pencil-square"></i>
+                            </div>
+                            <div class="delete_button button">
+                                <i class="bi bi-trash-fill"></i>
+                            </div>
+                        </td>
+                    </tr>
+                //}
+            }
+
+        }
+
+    </tbody>
+</table>
+
+<div class="edit_modal">
+    <div class="modal_container">
+        <div class="close_btn">
+            <i class="bi bi-x-lg"></i>
+        </div>
+        <h1>CHỈNH SỬA THÔNG TIN</h1>
+        <form action="" name="formEdit" id="formEdit" class="info_form">
+            <div class="address_group">
+                <h3>Địa chỉ cho thuê</h3>
+                <div class="address_box">
+                    <div class="address_input">
+                        <h4>Số nhà - Tên đường: <span class="msg msg_diachi" style="color:red;"></span></h4>
+                        <input class="info" type="text" name="diachi" id="diachi" required>
+                    </div>
+                    <div class="address_select">
+                        <div class="address_choice">
+                            <h4>Tỉnh/Thành phố:</h4>
+                            <select class="info" name="tinh" id="tinh" disabled>
+                                <option value="0">Tỉnh Thành</option>
+                            </select>
+                        </div>
+
+                        <div class="address_choice">
+                            <h4>Quận/Huyện:</h4>
+                            <select class="info" name="quan" id="quan" disabled>
+                                <option value="0">Quận/Huyện</option>
+                            </select>
+                        </div>
+
+                        <div class="address_choice">
+                            <h4>Phường/Xã: <span class="msg msg_phuong" style="color:red;"></span></h4>
+                            <select class="info" name="phuong" id="phuong" required>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <div class="desc_group">
+                <h3>Thông tin nhà trọ</h3>
+
+                <div class="desc_row">
+                    <div class="desc_info">
+                        <h4>Tên trọ: <span class="msg msg_tentro" style="color:red;"></span></h4>
+                        <input class="info" type="text" name="ten_tro" id="ten_tro" required>
+                    </div>
+                    <div class="desc_info">
+                        <h4>Diện tích (m2): </h4>
+                        <input class="info" type="number" name="dien_tich" id="dien_tich" required>
+                    </div>
+                </div>
+
+                <div class="desc_row">
+                    <div class="desc_info">
+                        <h4>Trạng thái phòng: <span class="msg msg_trangthai" style="color:red;"></span></h4>
+                        <select class="info" name="trang_thai" id="trang_thai" required>
+                            <option value="0" selected>Vui lòng chọn</option>
+                            <option value="1">Còn phòng</option>
+                            <option value="2">Hết phòng</option>
+                        </select>
+                    </div>
+                    <div class="desc_info">
+                        <h4>Giá phòng (VNĐ): </h4>
+                        <input class="info gia" type="number" name="gia_phong" id="gia_phong" required>
+                    </div>
+                </div>
+
+                <div class="desc_row">
+                    <div class="desc_info">
+                        <h4>Giá điện (VNĐ): </h4>
+                        <input class="info gia" type="number" name="gia_dien" id="gia_dien" required>
+                    </div>
+                    <div class="desc_info">
+                        <h4>Giá nước (VNĐ): </h4>
+                        <input class="info gia" type="number" name="gia_nuoc" id="gia_nuoc" required>
+                    </div>
+                </div>
+
+                <div class="desc_row">
+                    <div class="desc_info">
+                        <h4>Tiện ích: <span class="msg msg_tienich" style="color:red;"></span></h4>
+                        <textarea class="info" name="tien_ich" id="tien_ich" required></textarea>
+                    </div>
+                </div>
+
+                <div class="desc_row">
+                    <div class="desc_info">
+                        <h4>Thông tin mô tả: <span class="msg_mota" style="color:red;"></span></h4>
+                        <textarea class="info" name="mo_ta" id="mo_ta" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image_group">
+                <h3>Hình ảnh <span tabindex="0" class="msg msg_hinhanh" style="color:red"></span></h3>
+                <p>Chọn ảnh về nhà trọ của bạn</p>
+                <label for="imageInput" class="input_img_btn" tabindex="0"><i class="bi bi-camera-fill"></i>Tải ảnh lên</label>
+                <input type="file" name="imageInput" id="imageInput" style="display: none;" accept=".jpg, .jpeg, .png, .gif" multiple>
+                <p>Ảnh đã chọn</p>
+                <div class="imagePreview">
+                </div>
+            </div>
+
+            <button type="submit" class="upload_button">
+                Đăng tải
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal-confirm">
+    <div class="modal-confirm-container">
+        <i class="bi bi-x-lg closeIcon"></i>
+        <h2 class="modal-header">Thông báo</h2>
+        <h3 class="modal-msg">Bạn muốn xóa nhà trọ?</h3>
+        <div class="btn-box">
+            <div class="modal-btn" id="btn-confirm">
+                Xóa
+            </div>
+            <div class="modal-btn" id="btn-close">Thoát</div>
+        </div>
+    </div>
+</div>
+
+<div id="toast">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+
+<script src="~/Areas/User/assets/js/animation.js"></script>
+<script src="~/Areas/User/assets/js/toast.js"></script>
+<script src="~/Areas/User/assets/js/script_quanlytro.js"></script>

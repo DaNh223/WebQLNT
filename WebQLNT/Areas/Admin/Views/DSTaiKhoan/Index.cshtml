@@ -1,0 +1,502 @@
+﻿@model IEnumerable<WebQLNT.Areas.Admin.Data.NguoiDungViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPageAdmin.cshtml";
+}
+<style>
+    .error {
+        font-size: 14px;
+        color: red;
+    }
+</style>
+<div class="main__right container">
+    <div class="right__header">
+        <h1>Danh sách tài khoản chủ trọ</h1>
+
+        <div class="box-right-header">
+
+            <div class="searh-box">
+                <i class="ri-search-line"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm...">
+            </div>
+
+            <div class="sort-bar">
+                <select id="sort_list">
+                    <option class="sort_item" value="default">Mặc định</option>
+                    <option class="sort_item" value="nameAsc">Theo tên: từ a-z</option>
+                    <option class="sort_item" value="nameDesc">Theo tên: từ z-a</option>
+                    <option class="sort_item" value="postCountAsc">SL bài đăng: thấp đến cao</option>
+                    <option class="sort_item" value="postCountDesc">Giá thuê: cao đến thấp</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+
+    <br>
+    <!-- Start table -->
+    <div class="box-table">
+        <table width="100%" id="dataTable">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Họ Tên </td>
+                    <td>Năm sinh</td>
+                    <td>Địa chỉ</td>
+                    <td>SĐT</td>
+                    <td>SL bài đăng</td>
+                    <td colspan=2>Sửa | Xóa</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr data-id="@item.MaND">
+                        <td id="post-id">@item.MaND</td>
+                        <td class="people">
+                            <img src="@(item.HinhND == null ? Url.Content("~/Areas/User/assets/img/user_img.png") : Url.Content($"~/uploads/{item.HinhND}")) " alt="">
+                            <div class="people-des">
+                                <h5>@item.TenND</h5>
+                                <p>@item.Email</p>
+                            </div>
+                        </td>
+                        <td class="people-brday">
+                            <p>@item.NgaySinh.ToShortDateString()</p>
+                        </td>
+                        <td class="people-location">
+                            <p>@item.Diachi</p>
+                        </td>
+                        <td class="people-phone">
+                            <p>@item.SDT</p>
+                        </td>
+                        <td class="people-quatity-post">
+                            <p class="">@item.SoLuongNhaTro</p>
+                        </td>
+                        <td class="action">
+                            <button class="btn-edit js-edit-acc"
+                                    data-id="@item.MaND"
+                                    data-name="@item.TenND"
+                                    data-email="@item.Email"
+                                    data-dob="@item.NgaySinh.ToString("yyyy-MM-dd")"
+                                    data-address="@item.Diachi"
+                                    data-phone="@item.SDT"
+                                    data-post_count="@item.SoLuongNhaTro"
+                                    data-zalo_link="@item.Zalo"
+                                    data-fb_link="@item.Facebook"
+                                    type="button">
+                                <i class="ri-file-edit-line"></i>
+                            </button>
+                            <button class="btn-delete js-delete-acc" type="submit" data-id="@item.MaND"><i class="ri-delete-bin-2-line"></i></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<!-- End main -->
+<!-- Begin modal delete -->
+<div class="modal-account-delete js-modal-account-delete ">
+    <div class="modal-account-delete-container js-modal-account-delete-container ">
+        <!--Begin Close-button -->
+        <!--End Close-button -->
+        <div class="modal-account-delete-header">
+            <p class="head-delete-arlert">Xác nhận xóa tài khoản </p>
+        </div>
+        <div class="modal-account-delete-body">
+
+            <div class="body-alert">
+                <p>Lưu ý: Tất cả thông tin bài đăng liên quan đến tài khoản này sẽ bị xóa theo!</p>
+            </div>
+            <hr>
+
+            <div class="btn-option">
+                <button type="submit" class="cancel-account js-modal-account-delete-cancel">Hủy</button>
+                <button type="submit" class="delete-account js-modal-account-deleted">Xóa</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!--End Modal-Delete -->
+<!--Begin Modal-Edit -->
+<div id="myModal" class="modal-edit-acc js-modal-edit-acc">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1>Thông tin chi tiết</h1>
+            <span class="close-modal-edit js-close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div>
+                <label for="id">ID:</label>
+                <input type="text" id="id" disabled>
+                <span class="error" id="error-id"></span>
+            </div>
+            <div>
+                <label for="name">Họ tên:</label>
+                <input type="text" id="name" required>
+                <span class="error" id="error-name"></span>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+                <span class="error" id="error-email"></span>
+            </div>
+            <div>
+                <label for="dob">Năm sinh:</label>
+                <input type="date" id="dob" max="" required>
+                <span class="error" id="error-dob"></span>
+            </div>
+            <div>
+                <label for="address">Địa chỉ:</label>
+                <input type="text" id="address" required>
+                <span class="error" id="error-address"></span>
+            </div>
+            <div>
+                <label for="phone">SĐT:</label>
+                <input type="text" id="phone" pattern="^[0-9]{10}$" maxlength="10" required>
+                <span class="error" id="error-phone"></span>
+            </div>
+            <div>
+                <label for="post_count">SL bài đăng:</label>
+                <input type="text" id="post_count" disabled>
+                <span class="error" id="error-post_count"></span>
+            </div>
+            <div>
+                <label for="zalo_link">Đường link Zalo:</label>
+                <input type="url" id="zalo_link" required>
+                <span class="error" id="error-zalo_link"></span>
+            </div>
+            <div>
+                <label for="fb_link">Đường link Facebook:</label>
+                <input type="url" id="fb_link" required>
+                <span class="error" id="error-fb_link"></span>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" id="save-btn">Lưu thông tin</button>
+        </div>
+    </div>
+</div>
+<!--End Modal-Edit -->
+<!-- JAVASCRIPT -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+
+
+    const modal_delete_acc = document.querySelector('.js-modal-account-delete');
+    const btn_acc_delete = document.querySelectorAll('.js-delete-acc');
+    const btn_acc_cancel = document.querySelector(".js-modal-account-delete-cancel");
+
+    //btn_acc_delete.forEach(button => {
+    //    button.addEventListener('click', ShowMessageDelete);
+    //});
+    btn_acc_cancel.addEventListener('click', HideMessageDeleted);
+
+    function HideMessageDeleted() {
+       modal_delete_acc.classList.remove('open');
+    }
+    // Modal edit
+    const modal_edit_acc = document.querySelector('.js-modal-edit-acc');
+    const btn_acc_edit = document.querySelectorAll('.js-edit-acc');
+    const btn_close_modal = document.querySelector('.js-close-modal');
+    const save_btn = document.getElementById('save-btn');
+
+    function ShowEditModal(event) {
+        const button = event.currentTarget;
+        const id = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name');
+        const email = button.getAttribute('data-email');
+        const dob = button.getAttribute('data-dob');
+        const address = button.getAttribute('data-address');
+        const phone = button.getAttribute('data-phone');
+        const postCount = button.getAttribute('data-post_count');
+        const zaloLink = button.getAttribute('data-zalo_link');
+        const fbLink = button.getAttribute('data-fb_link');
+
+        document.getElementById('id').value = id;
+        document.getElementById('name').value = name;
+        document.getElementById('email').value = email;
+        document.getElementById('dob').value = dob;
+        document.getElementById('address').value = address;
+        document.getElementById('phone').value = phone;
+        document.getElementById('post_count').value = postCount;
+        document.getElementById('zalo_link').value = zaloLink;
+        document.getElementById('fb_link').value = fbLink;
+
+        modal_edit_acc.classList.add('open');
+    }
+
+
+    function HideEditModal() {
+        modal_edit_acc.classList.remove('open');
+        document.getElementById('id').value = null;
+        document.getElementById('name').value = null;
+        document.getElementById('email').value = null;
+        document.getElementById('dob').value = null;
+        document.getElementById('address').value = null;
+        document.getElementById('phone').value = null;
+        document.getElementById('post_count').value = null;
+        document.getElementById('zalo_link').value = null;
+        document.getElementById('fb_link').value = null;
+
+        document.getElementById(`error-id`).textContent = ''
+        document.getElementById(`error-name`).textContent = ''
+        document.getElementById(`error-email`).textContent = ''
+        document.getElementById(`error-dob`).textContent = ''
+        document.getElementById(`error-address`).textContent = ''
+        document.getElementById(`error-phone`).textContent = ''
+        document.getElementById(`error-zalo_link`).textContent = ''
+        document.getElementById(`error-fb_link`).textContent = ''
+
+    }
+
+
+
+    $(document).ready(function () {
+
+        //Tìm kiếm
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#dataTable tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        // Sắp xếp
+        $("#sort_list").on("change", function () {
+            var sortValue = $(this).val();
+            var rows = $("#dataTable tbody tr").get();
+
+            rows.sort(function (a, b) {
+                var keyA = $(a).children("td").eq(1).text().toUpperCase();
+                var keyB = $(b).children("td").eq(1).text().toUpperCase();
+
+                if (sortValue === "nameAsc") {
+                    return (keyA < keyB) ? -1 : (keyA > keyB) ? 1 : 0;
+                } else if (sortValue === "nameDesc") {
+                    return (keyA > keyB) ? -1 : (keyA < keyB) ? 1 : 0;
+                }
+
+                keyA = parseInt($(a).children("td").eq(5).text());
+                keyB = parseInt($(b).children("td").eq(5).text());
+
+                if (sortValue === "postCountAsc") {
+                    return keyA - keyB;
+                } else if (sortValue === "postCountDesc") {
+                    return keyB - keyA;
+                }
+
+                return 0;
+            });
+
+            $.each(rows, function (index, row) {
+                $("#dataTable tbody").append(row);
+            });
+        });
+
+    // Cập nhật thông tin người dùng
+    $("#save-btn").click(function () {
+        if (validateForm()) {
+            var data = {
+                MaND: $("#id").val(),
+                TenND: $("#name").val(),
+                Email: $("#email").val(),
+                NgaySinh: $("#dob").val(),
+                Diachi: $("#address").val(),
+                SDT: $("#phone").val(),
+                Zalo: $("#zalo_link").val(),
+                Facebook: $("#fb_link").val()
+            };
+
+            $.ajax({
+                url: '@Url.Action("CapNhatNguoiDung", "DSTaiKhoan", new { area = "Admin" })',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.success) {
+                        // Cập nhật thông tin trên trang mà không cần reload
+                        var row = $('tr[data-id="' + data.MaND + '"]');
+                        row.find('.people-des h5').text(data.TenND);
+                        row.find('.people-des p').text(data.Email);
+                        row.find('.people-brday p').text(new Date(data.NgaySinh).toLocaleDateString());
+                        row.find('.people-location p').text(data.Diachi);
+                        row.find('.people-phone p').text(data.SDT);
+
+                        var editBtn = row.find('.js-edit-acc');
+                        editBtn.attr('data-name', data.TenND);
+                        editBtn.attr('data-email', data.Email);
+                        editBtn.attr('data-dob', data.NgaySinh); // Cần chuyển đổi định dạng ngày tháng nếu cần thiết
+                        editBtn.attr('data-address', data.Diachi);
+                        editBtn.attr('data-phone', data.SDT);
+                        editBtn.attr('data-post_count', data.SoLuongNhaTro);
+                        editBtn.attr('data-zalo_link', data.Zalo);
+                        editBtn.attr('data-fb_link', data.Facebook);
+                        Toastify({
+                            text: response.message,
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                            style: {
+                                font: "16px Arial",
+                                padding: "15px",
+                                minWidth: "300px"
+                            }
+                        }).showToast();
+
+                        // Đóng modal
+                        HideEditModal();
+                    } else {
+                        Toastify({
+                            text: response.message,
+                            duration: 3000,
+                            close: true,
+                            gravity: "bottom",
+                            position: "center",
+                            backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                            style: {
+                                font: "16px Arial",
+                                padding: "15px",
+                                minWidth: "300px"
+                            }
+                        }).showToast();
+                    }
+                },
+                error: function () {
+                    Toastify({
+                        text: "Đã có lỗi xảy ra.",
+                        duration: 3000,
+                        close: true,
+                        gravity: "bottom",
+                        position: "center",
+                        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)"
+                    }).showToast();
+                }
+            });
+        } else {
+            console.log('Form is invalid');
+        }
+    });
+
+        function validateForm() {
+            let isValid = true;
+            let firstErrorElement = null;
+            const formElements = document.querySelectorAll('.modal-body input');
+
+            formElements.forEach(element => {
+                if (!element.checkValidity()) {
+                    document.getElementById(`error-${element.id}`).textContent = element.validationMessage;
+                    isValid = false;
+                    if (!firstErrorElement) {
+                        firstErrorElement = element;
+                    }
+                } else {
+                    document.getElementById(`error-${element.id}`).textContent = '';
+                }
+
+                if (element.id === 'dob') {
+                    const dob = new Date(element.value);
+                    const today = new Date();
+                    if (dob > today) {
+                        document.getElementById(`error-${element.id}`).textContent = 'Năm sinh không được lớn hơn ngày hiện tại.';
+                        isValid = false;
+                        if (!firstErrorElement) {
+                            firstErrorElement = element;
+                        }
+                    }
+                }
+            });
+
+            if (firstErrorElement) {
+                firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return isValid;
+        }
+});
+
+    btn_acc_edit.forEach(button => {
+        button.addEventListener('click', ShowEditModal);
+    });
+    btn_close_modal.addEventListener('click', HideEditModal);
+
+
+    //xóa người dùng ajax
+    var postIdUser;
+    $(".js-delete-acc").click(function () {
+        postIdUser = $(this).data("id");
+        $(".js-modal-account-delete").addClass('open');
+    });
+
+    $(".js-modal-account-deleted").click(function () {
+        $.ajax({
+            url: '@Url.Action("XoaNguoiDung", "DSTaiKhoan", new { area = "Admin" })',
+            type: 'POST',
+            data: { id: postIdUser },
+            success: function (response) {
+                if (response.success) {
+                    Toastify({
+                        text: response.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        style: {
+                            font: "16px Arial",
+                            padding: "15px",
+                            minWidth: "300px"
+                        }
+                    }).showToast();
+                    $(".js-modal-account-deleted").removeClass('open');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    Toastify({
+                        text: response.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "bottom",
+                        position: "center",
+                        backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)",
+                        style: {
+                            font: "16px Arial",
+                            padding: "15px",
+                            minWidth: "300px"
+                        }
+                    }).showToast();
+                }
+            },
+            error: function () {
+                Toastify({
+                    text: "Đã có lỗi xảy ra.",
+                    duration: 3000,
+                    close: true,
+                    gravity: "bottom",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)"
+                }).showToast();
+                console.log(postIdUser)
+            }
+        });
+
+        $(".js-modal-account-delete").removeClass('open');
+    });
+
+
+</script>
+

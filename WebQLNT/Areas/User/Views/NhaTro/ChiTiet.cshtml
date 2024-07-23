@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "ChiTiet";
+    Layout = "~/Areas/User/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<link rel="stylesheet" href="~/Areas/User/assets/css/style_chitiet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+
+@{ var CTNT = ViewBag.CTNT as WebQLNT.Models.NhaTro;}
+
+
+<p class="breadcrumb">Trang chủ >> <span>@CTNT.TenTro</span></p>
+
+<div class="content_container">
+    <div class="left_container">
+        <div class="image_form form">
+            <div class="image_header form_header">
+                <h2>@CTNT.TenTro</h2>
+            </div>
+            <div class="image_content">
+                <div class="cart-wrapper">
+                    <div class="card">
+                        <div style="--swiper-navigation-color: var(--blue_color); --swiper-pagination-color: #fff"
+                             class="swiper mySwiper2">
+                            <div class="swiper-wrapper">
+
+                                @{
+                                    foreach (var hinh in CTNT.HinhAnh)
+                                    {
+                                        <div class="swiper-slide" style="height: 400px;">
+                                            <a href="@Url.Content($"~/uploads/{hinh.URL}")" target="_blank">
+                                                <img class="image-fit" src="@Url.Content($"~/uploads/{hinh.URL}")" />
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                        <div thumbsSlider="" class="swiper mySwiper">
+                            <div class="swiper-wrapper" style="display:flex; align-items:center; justify-content:center">
+                                @{
+                                    foreach (var hinh in CTNT.HinhAnh)
+                                    {
+                                        <div class="swiper-slide img-item" style="height: 100px;">
+                                            <img src="@Url.Content($"~/uploads/{hinh.URL}")" />
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info_form form">
+            <div class="info_header form_header">
+                <h3>Thông tin về nhà trọ</h3>
+            </div>
+            <div class="info_content">
+                <div class="address info">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <p>
+                        <span>Địa chỉ: </span>@CTNT.DiaChi, @CTNT.Phuong, @CTNT.Quan, @CTNT.Tinh
+                    </p>
+                </div>
+                <div class="price info">
+                    <i class="bi bi-currency-dollar"></i>
+                    <p><span>Giá: </span>@String.Format("{0:N0}", @CTNT.GiaPhong) VNĐ</p>
+                </div>
+                <div class="square info">
+                    <i class="bi bi-aspect-ratio-fill"></i>
+                    <p><span>Diện tích: </span>@CTNT.DienTich m2</p>
+
+                </div>
+                <div class="room info">
+                    <i class="bi bi-houses-fill"></i>
+                    <p><span>Phòng: </span>@CTNT.TrangThai</p>
+                </div>
+            </div>
+        </div>
+        <div class="price_form form">
+            <div class="price_header form_header">
+                <h3>Giá tiền điện/nước</h3>
+            </div>
+
+            <div class="price_content">
+                <div class="electric info">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                    <p><span>Tiền điện: </span>@String.Format("{0:N0}", @CTNT.GiaDien) VNĐ/kWh</p>
+                </div>
+
+                <div class="water info">
+                    <i class="bi bi-droplet-fill"></i>
+                    <p><span>Tiền nước: </span>@String.Format("{0:N0}", @CTNT.GiaNuoc) VNĐ/Khối</p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="benefit_form form">
+            <div class="benefit_header form_header">
+                <h3>Tiện ích</h3>
+            </div>
+
+            <div class="benefit_content">
+                <p>@CTNT.TienIch</p>
+                @*<p>+ Wifi mạnh như NASA</p>
+                    <p>+ Gần chợ Tân Việt Hòa</p>
+                    <p>+ Máy lạnh chạy phà phà</p>*@
+            </div>
+
+        </div>
+        <div class="desc_form form">
+            <div class="desc_header form_header">
+                <h3>Mô tả</h3>
+            </div>
+
+            <div class="desc_content">
+                <p>@CTNT.MoTa</p>
+            </div>
+        </div>
+    </div>
+    <div class="right_container">
+        <div class="contact_form form">
+            <div class="contact_header">
+                <h3>Thông tin liên hệ</h3>
+                @{
+                    var tenChu = CTNT.NguoiDung.TenND;
+                    var sdtChu = CTNT.NguoiDung.SDT;
+                    //var hinhCT = @Url.Content($"~/uploads/{CTNT.NguoiDung.HinhND ?? "~/Areas/User/assets/img/img1.jpg"}");
+                    var hinhCT = @Url.Content(CTNT.NguoiDung.HinhND == null ? "~/Areas/User/assets/img/user_img.png" : $"~/uploads/{CTNT.NguoiDung.HinhND}");
+                    var zalo = CTNT.NguoiDung.Zalo ?? "";
+                    var facebook = CTNT.NguoiDung.Facebook ?? "";
+                }
+            </div>
+            <div class="contact_img">
+                <img src="@hinhCT" alt="">
+            </div>
+            <div class="contact_name">
+                <h3>Chủ trọ: @tenChu</h3>
+            </div>
+            <div class="contact_phone">
+                <h3>SĐT: @sdtChu</h3>
+                <div class="zalo contact_icon">
+                    @if (zalo != "")
+                    {
+                        <a href="@zalo" target="_blank">
+                            <img src="~/Areas/User/assets/img/Icon_of_Zalo.png" alt="">
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="">
+                            <img src="~/Areas/User/assets/img/Icon_of_Zalo.png" alt="">
+                        </a>
+                    }
+                </div>
+                <div class="facebook contact_icon">
+                    @if (facebook != "")
+                    {
+                        <a href="@facebook" target="_blank">
+                            <img src="~/Areas/User/assets/img/Facebook_Logo.png" alt="">
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#">
+                            <img src="~/Areas/User/assets/img/Facebook_Logo.png" alt="">
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="location_form form">
+            <div class="location_header">
+                <h3>Vị trí</h3>
+            </div>
+            @*<div class="location_content">
+                    <div id="map"></div>
+                </div>*@
+            <div id="map"></div>
+
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="~/Areas/User/assets/js/animation.js"></script>
+<script src="~/Areas/User/assets/js/toast.js"></script>
+<script src="~/Areas/User/assets/js/script_chitiet.js"></script>
+
+<script>
+    var lat = @Html.Raw(Json.Encode(CTNT.Lat));
+    var lng = @Html.Raw(Json.Encode(CTNT.Lng));
+
+    var diaChi = '@CTNT.DiaChi';
+    var phuong = '@CTNT.Phuong';
+    LoadMap(lat, lng, diaChi, phuong);
+    console.log(lat, lng, diaChi,phuong);
+</script>   

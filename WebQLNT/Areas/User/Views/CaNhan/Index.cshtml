@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/User/Views/Shared/_LayoutPage2.cshtml";
+}
+
+<link rel="stylesheet" href="~/Areas/User/assets/css/style_canhan.css">
+<h1>Thông tin cá nhân</h1>
+<hr>
+
+@{
+    var NguoiDung = ViewBag.NguoiDung as WebQLNT.Models.NguoiDung;
+
+}
+<form id="info_form">
+    <div class="img_box">
+        <div class="img_container">
+            <img src="@(NguoiDung.HinhND == null ? Url.Content("~/Areas/User/assets/img/user_img.png") : Url.Content($"~/uploads/{NguoiDung.HinhND}"))" id="user_img" alt="">
+        </div>
+        <label for="imageInput" class="input_img_btn"><i class="bi bi-camera-fill"></i>Tải ảnh lên</label>
+        <input type="file" accept=".jpg, .jpeg, .png, .gif" name="imageInput" id="imageInput" style="display: none;"
+               onchange="chooseImg(this)">
+    </div>
+
+    <div class="info_box">
+        <div class="info_row">
+            <div class="info_item">
+                <h4>Họ tên chủ trọ <span class="msg msg_ten" style="color:red;"></span></h4>
+                <input type="text" name="hoten" value="@NguoiDung.TenND" id="hoten" required>
+            </div>
+            <div class="info_item">
+                <h4>Năm sinh <span class="msg msg_namsinh" style="color:red;"></span></h4>
+                <input type="date" name="namsinh" value="@string.Format("{0:yyyy-MM-dd}", NguoiDung.NgaySinh)" id="namsinh" required>
+            </div>
+        </div>
+
+        <div class="info_row">
+            <div class="info_item">
+                <h4>Số điện thoại <span class="msg msg_sdt" style="color:red;"></span></h4>
+                <input minlength="10" type="number" name="sdt" value="@NguoiDung.SDT" id="sdt" required>
+            </div>
+            <div class="info_item">
+                <h4>Email <span class="msg msg_email" style="color:red;"></span></h4>
+                <input type="email" name="email" value="@NguoiDung.TaiKhoan.Email" id="email" disabled required>
+            </div>
+        </div>
+
+        <div class="info_row">
+            <div class="info_item">
+                <h4>Địa chỉ <span class="msg msg_diachi" style="color:red;"></span></h4>
+                <input type="text" name="diachi" value="@NguoiDung.DiaChi" id="diachi" required>
+            </div>
+        </div>
+        <div class="info_row">
+            <div class="info_item">
+                <h4>Liên kết Zalo <span class="msg msg_zalo" style="color:red;"></span></h4>
+                <input type="text" name="zalo" value="@(NguoiDung.Zalo == null || NguoiDung.Zalo == "" ? "" : NguoiDung.Zalo)" id="zalo">
+            </div>
+        </div>
+        <div class="info_row">
+            <div class="info_item">
+                <h4>Liên kết Facebook <span class="msg msg_facebook" style="color:red;"></span></h4>
+                <input type="text" name="facebook" value="@(NguoiDung.Facebook == null || NguoiDung.Facebook == "" ? "" : NguoiDung.Facebook)" id="facebook">
+            </div>
+        </div>
+
+        <button type="submit" class="save_button">Lưu thông tin</button>
+    </div>
+</form>
+
+
+<div id="toast">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="~/Areas/User/assets/js/toast.js"></script>
+<script src="~/Areas/User/assets/js/animation.js"></script>
+<script src="~/Areas/User/assets/js/script_canhan.js"></script>
+
