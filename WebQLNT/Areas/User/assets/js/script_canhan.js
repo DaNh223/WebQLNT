@@ -1,4 +1,9 @@
 ﻿
+document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('namsinh').max = today;
+});
+
 function chooseImg(fileInput) {
     if (fileInput.files && fileInput.files[0]) {
         var file = fileInput.files[0];

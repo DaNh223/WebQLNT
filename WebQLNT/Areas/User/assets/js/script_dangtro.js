@@ -244,8 +244,9 @@
                     if (response.status === "success") {
                         $("input.info").val("");
                         $("textarea.info").val("");
-                        $("select.info").val(0);
-                        $("select.info").val($("select.info option:first").val());
+                        //$("select.info").val(0);
+                        //$("select.info").val($("select.info option:first").val());
+                        $("#phuong").val($("#phuong option:first").val());
                         $(".msg").html("");
                         showUploadSuccessToast();
                         if (marker) {
@@ -254,7 +255,11 @@
                         map.setView([10.762622, 106.660172], 13); 
 
                         selectedFiles = [];
+                        checkImg();
                         displaySelectedImages();
+                        //setTimeout(function () {
+                        //    location.reload();
+                        //}, 2000);
                     }
                 },
                 error: function (error) {

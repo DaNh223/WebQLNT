@@ -9,6 +9,19 @@
         font-size: 14px;
         color: red;
     }
+
+    .disabled {
+        margin-left: 8px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 600;
+        background-color: #dddddd;
+        color: #666;
+        padding: 5px 8px;
+        border-radius: 5px;
+        border: none;
+        cursor: not-allowed;
+    }
 </style>
 <div class="main__right container">
     <div class="right__header">
@@ -89,7 +102,15 @@
                                     type="button">
                                 <i class="ri-file-edit-line"></i>
                             </button>
-                            <button class="btn-delete js-delete-acc" type="submit" data-id="@item.MaND"><i class="ri-delete-bin-2-line"></i></button>
+
+                            @if (item.LoaiND == "Admin")
+                            {
+                                <button class="disabled" type="submit" data-id="@item.MaND"><i class="ri-delete-bin-2-line"></i></button>
+                            }
+                            else
+                            {
+                                <button class="btn-delete js-delete-acc" type="submit" data-id="@item.MaND"><i class="ri-delete-bin-2-line"></i></button>
+                            }
                         </td>
                     </tr>
                 }
@@ -479,9 +500,11 @@
                             minWidth: "300px"
                         }
                     }).showToast();
+
+                    console.log(response.err);
                 }
             },
-            error: function () {
+            error: function (err) {
                 Toastify({
                     text: "Đã có lỗi xảy ra.",
                     duration: 3000,
@@ -491,6 +514,7 @@
                     backgroundColor: "linear-gradient(to right, #ff416c, #ff4b2b)"
                 }).showToast();
                 console.log(postIdUser)
+                console.error('Error:', err);
             }
         });
 

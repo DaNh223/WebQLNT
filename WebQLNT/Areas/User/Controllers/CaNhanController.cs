@@ -53,6 +53,18 @@ namespace WebQLNT.Areas.User.Controllers
 					var extension = Path.GetExtension(fileName);
 					var newFileName = $"userImg_{NguoiDung.MaND}{extension}";
 					var path = Path.Combine(Server.MapPath("~/uploads"), newFileName);
+
+					// Kiểm tra và xóa ảnh cũ nếu tồn tại
+					var oldFileName = NguoiDung.HinhND;
+					if (!string.IsNullOrEmpty(oldFileName))
+					{
+						var oldFilePath = Path.Combine(Server.MapPath("~/uploads"), oldFileName);
+						if (System.IO.File.Exists(oldFilePath))
+						{
+							System.IO.File.Delete(oldFilePath);
+						}
+					}
+
 					imageInput.SaveAs(path);
 					NguoiDung.HinhND = newFileName;
 					Session["userImg"] = newFileName;

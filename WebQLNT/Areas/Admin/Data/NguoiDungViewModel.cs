@@ -18,6 +18,7 @@ namespace WebQLNT.Areas.Admin.Data
 		public int MaTK { get; set; }
 		public string HinhND { get; set; }
 		public int SoLuongNhaTro { get; set; }
+		public string LoaiND { get; set; }
 
 	}
 }
